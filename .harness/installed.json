@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "harnessCommit": "603d5f074cfd2c213441ec65209035b05605352b",
+  "harnessCommit": "a49c6812552a30fb7aefb1aa24ad05e1063c819e",
   "generatedFiles": [
     {
       "path": ".github/skills/harness/SKILL.md",
