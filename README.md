@@ -40,8 +40,8 @@ Initialize a fresh checkout and verify the integration:
 
 ```bash
 git submodule update --init --recursive
-npm run harness:install
 npm ci
+npm run harness:install
 npm run harness:check
 npm run harness:doctor
 ```
@@ -56,9 +56,14 @@ The project skill generates acceptance scenarios before implementation, runs the
 uses Playwright for browser evaluation, and preserves public-safe evidence under `harness-runs/`.
 See [`plans/harness-demo.md`](plans/harness-demo.md) for the architecture and sample feature backlog.
 
+The Markdown skill is the harness entry point. The JavaScript files in the submodule are deterministic
+helpers for installation, validation, checks, and artifact recording; they do not define the agentic
+workflow.
+
 Copilot CLI discovers the generated skill, scenario-planning agent, and Playwright MCP configuration
-from the todo repository's `.github` directory. Updating the submodule requires rerunning
-`npm run harness:install` and committing the regenerated adapters.
+from the todo repository root. These generated adapters are ignored by Git and recreated with
+`npm run harness:install`. After updating the submodule, rerun the installer and start a new Copilot
+CLI session (`/skills reload` is sufficient for the skill alone).
 
 Copilot cloud agent needs a read-only fine-grained token that can access the private
 `harness-validations-org/harness-demo` repository. Store it as `HARNESS_REPO_TOKEN` in this
