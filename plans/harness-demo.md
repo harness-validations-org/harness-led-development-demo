@@ -121,14 +121,19 @@ The todo repository will expose one project skill:
 Example invocation:
 
 ```text
-Use the harness to implement the feature described in issue 12.
+/harness Work on issue #12.
 ```
 
 or:
 
 ```text
-Use the harness to add editing for existing tasks. Stop after evaluation and show me the diff.
+/harness We need to add a feature to edit existing tasks.
 ```
+
+These are complete prompts. The user should not need to reference this plan or repeat the harness
+workflow. The generated skill owns context gathering, scenario generation before coding,
+implementation, deterministic checks, Playwright evaluation, artifact preservation, repair limits,
+and the default prohibition on commit or push.
 
 The project skill is a generated router. It must:
 
@@ -431,9 +436,7 @@ These public, synthetic feature briefs are intentionally small enough for a Copi
 session. Each can be copied into a GitHub issue and then implemented with:
 
 ```text
-Use the harness to implement issue <number>. Generate acceptance scenarios before coding, evaluate
-every required scenario with the configured checks and Playwright, preserve the run artifacts, and
-create a pull request.
+/harness Work on issue #<number>.
 ```
 
 ### Feature 1: Edit existing tasks

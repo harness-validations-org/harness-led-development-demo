@@ -51,9 +51,13 @@ copilot
 Then enter:
 
 ```text
-Use the /harness skill to implement the "Edit existing tasks" feature from plans/harness-demo.md.
-Generate scenarios before coding, evaluate every required scenario, and stop after showing me the
-report and diff. Do not commit or push.
+/harness We need to add a feature to edit existing tasks.
+```
+
+or:
+
+```text
+/harness Work on issue #12.
 ```
 
 The project skill generates acceptance scenarios before implementation, runs the repository checks,
@@ -70,6 +74,10 @@ The orchestration instructions live in:
 - Authoritative workflow: `.harness/engine/skills/build-feature/SKILL.md`
 - Independent scenario-planning instructions:
   `.github/agents/harness-scenario-planner.agent.md`
+
+The user does not need to specify context gathering, planning, scenario generation, testing,
+Playwright evaluation, artifact recording, repair limits, or Git restrictions. Those requirements are
+part of the harness orchestration contract.
 
 Copilot CLI discovers the generated skill, scenario-planning agent, and Playwright MCP configuration
 from the todo repository root. These generated adapters are ignored by Git and recreated with
