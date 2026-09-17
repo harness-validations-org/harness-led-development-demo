@@ -1,0 +1,37 @@
+{
+  "$schema": "./engine/schemas/project-config.schema.json",
+  "schemaVersion": 1,
+  "project": {
+    "name": "Daymark",
+    "type": "react-vite"
+  },
+  "commands": {
+    "install": "npm ci",
+    "lint": "npm run lint",
+    "test": "npm test",
+    "build": "npm run build",
+    "serve": "npm run preview -- --host 127.0.0.1 --port 4173"
+  },
+  "evaluation": {
+    "baseUrl": "http://127.0.0.1:4173",
+    "browser": "playwright-mcp",
+    "maxRepairAttempts": 2,
+    "requireNoConsoleErrors": true
+  },
+  "safety": {
+    "allowedPaths": [
+      "src/**",
+      "public/**",
+      "package.json",
+      "package-lock.json",
+      "README.md",
+      "harness-runs/**"
+    ],
+    "forbiddenPaths": [
+      ".git/**",
+      ".github/workflows/**",
+      ".harness/engine/**"
+    ],
+    "maxChangedFiles": 12
+  }
+}
