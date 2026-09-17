@@ -1,1 +1,1 @@
-# harness-led-developmemnt-demo
+# harness-led-development-demo
