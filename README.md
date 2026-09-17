@@ -1,32 +1,31 @@
-# React + TypeScript + Vite
+# Daymark
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Daymark is a focused, responsive todo application for planning daily work without the clutter. It ships with realistic mock tasks, category and date views, search, progress tracking, and browser persistence.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Add, complete, and delete tasks
+- Organize work by date, category, and priority
+- Search tasks and optionally hide completed work
+- Track daily completion at a glance
+- Keep changes between visits with local storage
+- Start with seeded data for immediate testing
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Requires Node.js 22 or later.
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Quality checks
+
+```bash
+npm run lint
+npm test
+npm run build
+```
+
+GitHub Actions runs separate test and production build jobs for pull requests and pushes to `main`.
