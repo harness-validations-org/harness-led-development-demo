@@ -39,17 +39,21 @@ coding harness as a Git submodule.
 Initialize a fresh checkout and verify the integration:
 
 ```bash
-git submodule update --init --recursive
-npm ci
-npm run harness:install
-npm run harness:check
-npm run harness:doctor
+npm run harness:setup
 ```
 
-Then ask GitHub Copilot:
+Start Copilot from the repository root:
+
+```bash
+copilot
+```
+
+Then enter:
 
 ```text
-Use the harness to implement <feature or public GitHub issue>.
+Use the /harness skill to implement the "Edit existing tasks" feature from plans/harness-demo.md.
+Generate scenarios before coding, evaluate every required scenario, and stop after showing me the
+report and diff. Do not commit or push.
 ```
 
 The project skill generates acceptance scenarios before implementation, runs the repository checks,
@@ -59,6 +63,13 @@ See [`plans/harness-demo.md`](plans/harness-demo.md) for the architecture and sa
 The Markdown skill is the harness entry point. The JavaScript files in the submodule are deterministic
 helpers for installation, validation, checks, and artifact recording; they do not define the agentic
 workflow.
+
+The orchestration instructions live in:
+
+- Generated entry/router: `.github/skills/harness/SKILL.md`
+- Authoritative workflow: `.harness/engine/skills/build-feature/SKILL.md`
+- Independent scenario-planning instructions:
+  `.github/agents/harness-scenario-planner.agent.md`
 
 Copilot CLI discovers the generated skill, scenario-planning agent, and Playwright MCP configuration
 from the todo repository root. These generated adapters are ignored by Git and recreated with

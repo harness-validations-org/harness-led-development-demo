@@ -9,6 +9,7 @@
     "harness:check": "node .harness/engine/bin/install.mjs --check",
     "harness:doctor": "node .harness/engine/bin/harness.mjs doctor",
     "harness:install": "node .harness/engine/bin/install.mjs",
+    "harness:setup": "git submodule update --init --recursive && npm ci && npm run harness:install && npm run harness:check && npm run harness:doctor",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",

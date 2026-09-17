@@ -22,6 +22,8 @@ evaluation contract.
 - The generated router will resolve the pinned harness engine from `.harness/engine`.
 - Setup will be explicit, idempotent, and drift-checkable through `npm run harness:install` and
   `npm run harness:check`. It will not depend on a Git hook that silently executes after clone.
+- `npm run harness:setup` will provide the one-command local bootstrap by initializing the submodule,
+  installing app dependencies, projecting adapters, checking drift, and running the doctor.
 - Generated host adapters will not be committed. Generated run state and evidence will be committed
   for future comparison and analysis.
 - Run artifacts must be public-safe: no credentials, tokens, private URLs, raw authentication
@@ -337,13 +339,14 @@ the harness integration.
 The first end-to-end validation will run from the todo repository:
 
 1. Initialize the private submodule using the developer's GitHub credentials.
-2. Run the harness doctor.
-3. Invoke the `harness` project skill with a feature request.
-4. Review the generated plan and scenarios.
-5. Allow Copilot to implement the feature.
-6. Run deterministic checks and Playwright scenarios.
-7. Review the committed-ready run evidence and source diff.
-8. Commit only after human review.
+2. Run `npm run harness:setup`.
+3. Start Copilot CLI from the repository root.
+4. Invoke the `/harness` project skill with a feature request.
+5. Review the generated plan and scenarios.
+6. Allow Copilot to implement the feature.
+7. Run deterministic checks and Playwright scenarios.
+8. Review the committed-ready run evidence and source diff.
+9. Commit only after human review.
 
 ## GitHub Cloud Agent and Teams Validation
 
@@ -354,10 +357,8 @@ The todo repository will include `.github/workflows/copilot-setup-steps.yml` to:
 
 - Use a supported Node.js version.
 - Initialize the private `.harness/engine` submodule.
-- Run `npm ci`.
-- Run `npm run harness:install`.
-- Run `npm run harness:check`.
-- Run the harness doctor.
+- Run `npm run harness:setup`, which installs dependencies, projects adapters, checks drift, and runs
+  the doctor.
 
 Because both repositories are private, the setup job needs a read-only fine-grained token or GitHub
 App token that can read `harness-validations-org/harness-demo`. Store it as a
