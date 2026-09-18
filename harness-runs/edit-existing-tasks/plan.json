@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "summary": "Add an accessible inline editor backed by the existing todo state and persistence flow, with focused regression coverage.",
+  "steps": [
+    "Add edit state and handlers that initialize from a todo, validate and save trimmed input, or cancel without mutation.",
+    "Render labeled inline edit controls and accessible edit, save, and cancel actions while preserving normal task actions outside edit mode.",
+    "Style the editor responsively within the existing task-list design.",
+    "Add tests for save, cancel, blank-title validation, field updates, and persistence.",
+    "Run deterministic checks and execute every required browser scenario with console inspection."
+  ],
+  "files": [
+    "src/App.tsx",
+    "src/App.css",
+    "src/App.test.tsx",
+    "harness-runs/edit-existing-tasks/**"
+  ],
+  "risks": [
+    "An edited category or date can legitimately remove a task from the active filtered view.",
+    "Edit controls must not interfere with completion and deletion controls.",
+    "Form labels and focus behavior must remain usable on desktop and mobile."
+  ],
+  "allowedPaths": [
+    "src/**",
+    "harness-runs/**"
+  ]
+}
