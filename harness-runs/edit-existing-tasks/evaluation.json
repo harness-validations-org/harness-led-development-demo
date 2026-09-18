@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "status": "pending-browser",
+  "commands": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 181,
+      "stdout": "> daymark-todo@0.0.0 lint\n> oxlint",
+      "stderr": ""
+    },
+    {
+      "name": "test",
+      "command": "npm test",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 2197,
+      "stdout": "> daymark-todo@0.0.0 test\n> vitest run\n\n\n RUN  v4.1.11 <repo>\n\n\n Test Files  1 passed (1)\n      Tests  6 passed (6)\n   Start at  01:30:16\n   Duration  1.65s (transform 171ms, setup 172ms, import 158ms, tests 762ms, environment 430ms)",
+      "stderr": ""
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 4822,
+      "stdout": "> daymark-todo@0.0.0 build\n> tsc -b && vite build\n\n\u001b[36mvite v7.3.6 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 31 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.64 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.38 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[35mindex-Cb07ZKS-.css  \u001b[39m\u001b[1m\u001b[2m 11.21 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.11 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[36mindex-BB1KoFBq.js   \u001b[39m\u001b[1m\u001b[2m233.77 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 72.87 kB\u001b[22m\n\u001b[32m✓ built in 1.43s\u001b[39m",
+      "stderr": ""
+    }
+  ],
+  "safety": {
+    "status": "passed",
+    "changedFiles": 0,
+    "maxChangedFiles": 12,
+    "forbidden": [],
+    "outsideAllowed": []
+  },
+  "scenarios": [
+    {
+      "id": "edit-task-save-and-persist",
+      "title": "Edit every task detail and persist the result",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-validation",
+      "title": "Reject an empty edited title",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-cancel",
+      "title": "Cancel editing without changing the task",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "existing-task-actions-regression",
+      "title": "Existing task actions continue to work",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    }
+  ],
+  "console": {
+    "status": "not-run",
+    "errors": []
+  }
+}
