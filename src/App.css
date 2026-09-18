@@ -580,6 +580,12 @@ h1 {
   background: var(--sage);
 }
 
+.task-actions {
+  display: flex;
+  gap: 3px;
+}
+
+.edit-button,
 .delete-button {
   background: transparent;
   border: 0;
@@ -590,15 +596,19 @@ h1 {
   transition: color 150ms ease, opacity 150ms ease;
 }
 
+.todo-list li:hover .edit-button,
 .todo-list li:hover .delete-button,
+.edit-button:focus-visible,
 .delete-button:focus-visible {
   opacity: 1;
 }
 
+.edit-button:hover,
 .delete-button:hover {
   color: var(--coral);
 }
 
+.edit-button svg,
 .delete-button svg {
   fill: none;
   height: 17px;
@@ -607,6 +617,77 @@ h1 {
   stroke-linejoin: round;
   stroke-width: 1.6;
   width: 17px;
+}
+
+.edit-task {
+  display: grid;
+  gap: 12px;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) minmax(115px, 0.35fr) minmax(115px, 0.35fr);
+}
+
+.edit-task label {
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 0.65rem;
+  font-weight: 700;
+  gap: 5px;
+}
+
+.edit-task input,
+.edit-task select,
+.edit-task textarea {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 8px 9px;
+}
+
+.edit-task textarea {
+  resize: vertical;
+}
+
+.edit-title {
+  grid-column: span 2;
+}
+
+.edit-notes {
+  grid-column: 1 / -1;
+}
+
+.edit-error {
+  color: #a83e2b;
+  font-size: 0.68rem;
+  margin: 0;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  grid-column: 2 / -1;
+  justify-content: flex-end;
+}
+
+.edit-actions button {
+  background: var(--coral);
+  border: 1px solid var(--coral);
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+.edit-actions .secondary-button {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--muted);
 }
 
 .empty-state {
@@ -741,5 +822,20 @@ select:focus-visible {
   .add-options button {
     flex: 1 1 120px;
     width: 100%;
+  }
+
+  .edit-button,
+  .delete-button {
+    opacity: 1;
+  }
+
+  .edit-task {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-title,
+  .edit-notes,
+  .edit-actions {
+    grid-column: 1;
   }
 }

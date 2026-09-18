@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "edit-task-primary-flow",
+      "title": "Edit and save every editable task field",
+      "given": [
+        "Daymark is open with the seeded task list",
+        "The task 'Finalize the product roadmap' is visible"
+      ],
+      "when": [
+        "The user opens that task's editor",
+        "The user changes its title, notes, category, priority, and due date",
+        "The user saves the changes"
+      ],
+      "then": [
+        "The editor closes",
+        "The task displays the updated title, notes, category, priority, and due date"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "edit-task-title-validation",
+      "title": "A task cannot be saved without a title",
+      "given": [
+        "An existing task's editor is open"
+      ],
+      "when": [
+        "The user replaces the title with whitespace",
+        "The user attempts to save"
+      ],
+      "then": [
+        "The editor stays open",
+        "A validation message identifies the title requirement",
+        "The original task is not overwritten"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "edit-task-cancel",
+      "title": "Cancel discards task edits",
+      "given": [
+        "An existing task's editor is open"
+      ],
+      "when": [
+        "The user changes one or more fields",
+        "The user cancels editing"
+      ],
+      "then": [
+        "The editor closes",
+        "The task retains its original values"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "edit-task-persists",
+      "title": "Saved task edits persist after reload",
+      "given": [
+        "The user saved changes to an existing task"
+      ],
+      "when": [
+        "The page is reloaded"
+      ],
+      "then": [
+        "The updated task values remain visible",
+        "The browser console has no errors"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "existing-task-actions-regression",
+      "title": "Existing completion and deletion actions still work",
+      "given": [
+        "Daymark is open with the seeded task list"
+      ],
+      "when": [
+        "The user completes one task",
+        "The user deletes a different task"
+      ],
+      "then": [
+        "The completed task is marked complete",
+        "The deleted task is removed"
+      ],
+      "method": "test",
+      "priority": "required"
+    }
+  ]
+}
