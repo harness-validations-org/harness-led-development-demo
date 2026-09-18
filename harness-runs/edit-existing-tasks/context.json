@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "summary": "Issue #2 requests editing an existing Daymark task. The React application currently supports adding, completing, deleting, filtering, searching, and local-storage persistence, but has no edit state or edit controls.",
+  "requirements": [
+    "A user can open an existing task for editing and update its title, notes, category, priority, and due date.",
+    "Saving updates the existing task without duplicating it or changing its completion state.",
+    "Canceling leaves the task unchanged, and a blank title cannot be saved.",
+    "Saved edits participate in current search and filtering behavior and persist across reloads.",
+    "Editing controls are keyboard operable and have task-specific accessible names."
+  ],
+  "constraints": [
+    "Stay within the harness allowed paths and 12-file change budget.",
+    "Preserve existing add, complete, delete, search, filter, summary, and local-storage behavior.",
+    "Run configured lint, test, build, and required browser scenarios."
+  ],
+  "assumptions": [
+    "All existing editable task fields except completion state should be exposed because the issue asks to correct or update a task.",
+    "Editing uses explicit Save and Cancel actions rather than autosave.",
+    "Only one task can be edited at a time."
+  ],
+  "openQuestions": [],
+  "sources": [
+    {
+      "type": "github-issue",
+      "url": "https://github.com/harness-validations-org/harness-led-development-demo/issues/2",
+      "summary": "Open issue titled “Add a feature to edit existing tasks” requesting correction or updates to an existing task."
+    }
+  ]
+}

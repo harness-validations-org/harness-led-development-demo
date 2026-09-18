@@ -580,6 +580,12 @@ h1 {
   background: var(--sage);
 }
 
+.todo-actions {
+  display: flex;
+  gap: 3px;
+}
+
+.edit-button,
 .delete-button {
   background: transparent;
   border: 0;
@@ -590,15 +596,26 @@ h1 {
   transition: color 150ms ease, opacity 150ms ease;
 }
 
+.edit-button {
+  opacity: 1;
+}
+
 .todo-list li:hover .delete-button,
+.todo-list li:hover .edit-button,
+.edit-button:focus-visible,
 .delete-button:focus-visible {
   opacity: 1;
+}
+
+.edit-button:hover {
+  color: var(--ink);
 }
 
 .delete-button:hover {
   color: var(--coral);
 }
 
+.edit-button svg,
 .delete-button svg {
   fill: none;
   height: 17px;
@@ -607,6 +624,89 @@ h1 {
   stroke-linejoin: round;
   stroke-width: 1.6;
   width: 17px;
+}
+
+.todo-list li.editing {
+  display: block;
+  padding-block: 18px;
+}
+
+.edit-task {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  padding: 15px;
+}
+
+.edit-field {
+  display: grid;
+  gap: 5px;
+}
+
+.edit-field > span {
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.edit-field input,
+.edit-field select,
+.edit-field textarea {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 8px 9px;
+  width: 100%;
+}
+
+.edit-field textarea {
+  resize: vertical;
+}
+
+.edit-options {
+  display: grid;
+  gap: 9px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.edit-actions button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 8px 13px;
+}
+
+.cancel-edit {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.edit-actions .save-edit {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: white;
+}
+
+.edit-error {
+  color: #a33f29;
+  font-size: 0.7rem;
+  margin: -3px 0 0;
 }
 
 .empty-state {
@@ -741,5 +841,9 @@ select:focus-visible {
   .add-options button {
     flex: 1 1 120px;
     width: 100%;
+  }
+
+  .edit-options {
+    grid-template-columns: 1fr;
   }
 }

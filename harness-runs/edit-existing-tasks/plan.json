@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "summary": "Add an inline task editor backed by the existing todos state and local-storage effect, with accessible controls and focused automated coverage.",
+  "steps": [
+    "Add edit state plus start, save, and cancel handlers that preserve task identity and completion state.",
+    "Render an accessible inline form for all task details and expose a task-specific edit action.",
+    "Style the editor and action controls consistently across desktop and responsive layouts.",
+    "Add tests for loading values, saving, validation, cancellation, persistence, filtering, and existing actions.",
+    "Run deterministic checks and execute every required Playwright scenario."
+  ],
+  "files": [
+    "src/App.tsx",
+    "src/App.css",
+    "src/App.test.tsx",
+    "src/index.css",
+    "harness-runs/edit-existing-tasks/**"
+  ],
+  "risks": [
+    "An edit that changes a filtered field can intentionally remove the task from the current list.",
+    "Replacing a list item with a form must retain clear labels and sensible focus behavior.",
+    "External font requests can produce browser-console errors when the font service is unavailable.",
+    "Dependency restore may remain blocked by the environment package-feed policy."
+  ],
+  "allowedPaths": [
+    "src/**",
+    "README.md",
+    "harness-runs/**"
+  ]
+}

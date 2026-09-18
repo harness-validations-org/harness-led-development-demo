@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "edit-existing-task-details",
+      "title": "Update every editable task detail",
+      "given": [
+        "The seeded task “Finalize the product roadmap” is visible with its current details."
+      ],
+      "when": [
+        "The user opens that task for editing.",
+        "The user changes its title, notes, category, priority, and due date.",
+        "The user saves the edit."
+      ],
+      "then": [
+        "Exactly one task shows the updated details.",
+        "The original title is absent and the task completion state is unchanged.",
+        "The browser console has no errors."
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "cancel-and-validate-task-edit",
+      "title": "Cancel changes and reject a blank title",
+      "given": [
+        "The seeded task “Finalize the product roadmap” is visible."
+      ],
+      "when": [
+        "The user changes the title and cancels the edit.",
+        "The user reopens the editor, clears the title, and attempts to save."
+      ],
+      "then": [
+        "Canceling restores the unchanged task without creating a duplicate.",
+        "A blank title is not saved and the editor remains available with a visible validation indication.",
+        "The browser console has no errors."
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "persist-edited-task",
+      "title": "Persist a committed edit across reload",
+      "given": [
+        "An existing seeded task is visible and local storage is enabled."
+      ],
+      "when": [
+        "The user commits a new title for the task.",
+        "The user reloads the application."
+      ],
+      "then": [
+        "The edited title remains after reload.",
+        "The previous title does not return and no duplicate task appears.",
+        "The browser console has no errors."
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "keyboard-accessible-task-edit",
+      "title": "Edit a task with accessible keyboard controls",
+      "given": [
+        "A keyboard user navigates to an existing task."
+      ],
+      "when": [
+        "The user activates the task-specific edit control with the keyboard.",
+        "The user changes the title and saves with keyboard-operable controls."
+      ],
+      "then": [
+        "The edit action, fields, Save, and Cancel controls all have accessible names.",
+        "Focus moves to the title field when editing begins.",
+        "The saved title is exposed in the list without relying on color or hover, and the browser console has no errors."
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "preserve-edit-regressions",
+      "title": "Preserve filtering, persistence, and existing task actions",
+      "given": [
+        "The application contains seeded tasks and an existing task is opened for editing."
+      ],
+      "when": [
+        "The task is saved with updated values and the current filters are changed.",
+        "The edited task is completed and deleted, and a separate task is added."
+      ],
+      "then": [
+        "Search and category filtering use the edited values.",
+        "Completion, deletion, task creation, summaries, and local-storage persistence retain their existing behavior.",
+        "Unrelated tasks remain unchanged."
+      ],
+      "method": "test",
+      "priority": "required"
+    }
+  ]
+}
