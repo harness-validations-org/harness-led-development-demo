@@ -4,7 +4,7 @@ Daymark is a focused, responsive todo application for planning daily work withou
 
 ## Features
 
-- Add, complete, and delete tasks
+- Add, edit, complete, and delete tasks
 - Organize work by date, category, and priority
 - Search tasks and optionally hide completed work
 - Track daily completion at a glance

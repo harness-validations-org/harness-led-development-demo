@@ -7,6 +7,7 @@ import type { Category, Priority, Todo, View } from './types'
 const STORAGE_KEY = 'daymark.todos.v1'
 const categories: Category[] = ['Work', 'Personal', 'Health']
 const priorities: Priority[] = ['low', 'medium', 'high']
+type TodoDraft = Pick<Todo, 'id' | 'title' | 'notes' | 'category' | 'priority' | 'dueDate'>
 
 function toDateKey(date: Date) {
   const year = date.getFullYear()
@@ -42,9 +43,10 @@ function formatDueDate(dateKey: string) {
   }).format(new Date(`${dateKey}T12:00:00`))
 }
 
-function TaskIcon({ name }: { name: 'check' | 'plus' | 'search' | 'trash' }) {
+function TaskIcon({ name }: { name: 'check' | 'edit' | 'plus' | 'search' | 'trash' }) {
   const paths = {
     check: <path d="m5 12 4 4L19 6" />,
+    edit: <path d="m4 20 4.2-1 10.6-10.6a2.1 2.1 0 0 0-3-3L5.2 16 4 20Zm10.5-12.5 3 3" />,
     plus: <path d="M12 5v14M5 12h14" />,
     search: <path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />,
     trash: <path d="M4 7h16m-10 4v6m4-6v6M9 7l1-3h4l1 3m3 0-1 14H7L6 7" />,
@@ -67,6 +69,8 @@ function App() {
   const [newCategory, setNewCategory] = useState<Category>('Work')
   const [newPriority, setNewPriority] = useState<Priority>('medium')
   const [newDueDate, setNewDueDate] = useState(toDateKey(new Date()))
+  const [editDraft, setEditDraft] = useState<TodoDraft | null>(null)
+  const [editError, setEditError] = useState('')
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
@@ -117,6 +121,44 @@ function App() {
 
   function deleteTodo(id: string) {
     setTodos((current) => current.filter((todo) => todo.id !== id))
+    if (editDraft?.id === id) setEditDraft(null)
+  }
+
+  function startEditing(todo: Todo) {
+    setEditDraft({
+      id: todo.id,
+      title: todo.title,
+      notes: todo.notes,
+      category: todo.category,
+      priority: todo.priority,
+      dueDate: todo.dueDate,
+    })
+    setEditError('')
+  }
+
+  function cancelEditing() {
+    setEditDraft(null)
+    setEditError('')
+  }
+
+  function saveTodo(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!editDraft) return
+
+    const cleanTitle = editDraft.title.trim()
+    if (!cleanTitle) {
+      setEditError('Task title is required.')
+      return
+    }
+
+    setTodos((current) =>
+      current.map((todo) =>
+        todo.id === editDraft.id
+          ? { ...todo, ...editDraft, title: cleanTitle, notes: editDraft.notes.trim() }
+          : todo,
+      ),
+    )
+    cancelEditing()
   }
 
   const navItems: { id: View; label: string; symbol: string; count: number }[] = [
@@ -290,32 +332,103 @@ function App() {
 
           <ul className="todo-list" aria-live="polite">
             {visibleTodos.map((todo) => (
-              <li className={todo.completed ? 'completed' : ''} key={todo.id}>
-                <button
-                  aria-label={`${todo.completed ? 'Mark active' : 'Complete'}: ${todo.title}`}
-                  className="check-button"
-                  onClick={() => toggleTodo(todo.id)}
-                  type="button"
-                >
-                  {todo.completed && <TaskIcon name="check" />}
-                </button>
-                <div className="todo-copy">
-                  <strong>{todo.title}</strong>
-                  {todo.notes && <p>{todo.notes}</p>}
-                  <div className="todo-meta">
-                    <span className={`category-pill ${todo.category.toLowerCase()}`}>{todo.category}</span>
-                    <span className={`priority ${todo.priority}`}>{todo.priority}</span>
-                    <time dateTime={todo.dueDate}>{formatDueDate(todo.dueDate)}</time>
-                  </div>
-                </div>
-                <button
-                  aria-label={`Delete: ${todo.title}`}
-                  className="delete-button"
-                  onClick={() => deleteTodo(todo.id)}
-                  type="button"
-                >
-                  <TaskIcon name="trash" />
-                </button>
+              <li className={`${todo.completed ? 'completed' : ''} ${editDraft?.id === todo.id ? 'editing' : ''}`} key={todo.id}>
+                {editDraft?.id === todo.id ? (
+                  <form aria-label={`Edit ${todo.title}`} className="edit-task" onSubmit={saveTodo}>
+                    <div className="edit-fields">
+                      <label className="edit-title">
+                        <span>Task title</span>
+                        <input
+                          aria-describedby={editError ? `edit-error-${todo.id}` : undefined}
+                          aria-invalid={Boolean(editError)}
+                          autoFocus
+                          onChange={(event) => {
+                            setEditDraft({ ...editDraft, title: event.target.value })
+                            setEditError('')
+                          }}
+                          value={editDraft.title}
+                        />
+                      </label>
+                      <label className="edit-notes">
+                        <span>Notes</span>
+                        <textarea
+                          onChange={(event) => setEditDraft({ ...editDraft, notes: event.target.value })}
+                          rows={2}
+                          value={editDraft.notes}
+                        />
+                      </label>
+                      <label>
+                        <span>Category</span>
+                        <select
+                          onChange={(event) => setEditDraft({ ...editDraft, category: event.target.value as Category })}
+                          value={editDraft.category}
+                        >
+                          {categories.map((item) => <option key={item}>{item}</option>)}
+                        </select>
+                      </label>
+                      <label>
+                        <span>Priority</span>
+                        <select
+                          onChange={(event) => setEditDraft({ ...editDraft, priority: event.target.value as Priority })}
+                          value={editDraft.priority}
+                        >
+                          {priorities.map((item) => <option key={item}>{item}</option>)}
+                        </select>
+                      </label>
+                      <label>
+                        <span>Due date</span>
+                        <input
+                          onChange={(event) => setEditDraft({ ...editDraft, dueDate: event.target.value })}
+                          type="date"
+                          value={editDraft.dueDate}
+                        />
+                      </label>
+                    </div>
+                    {editError && <p className="edit-error" id={`edit-error-${todo.id}`} role="alert">{editError}</p>}
+                    <div className="edit-form-actions">
+                      <button className="cancel-edit" onClick={cancelEditing} type="button">Cancel</button>
+                      <button className="save-edit" type="submit">Save changes</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <button
+                      aria-label={`${todo.completed ? 'Mark active' : 'Complete'}: ${todo.title}`}
+                      className="check-button"
+                      onClick={() => toggleTodo(todo.id)}
+                      type="button"
+                    >
+                      {todo.completed && <TaskIcon name="check" />}
+                    </button>
+                    <div className="todo-copy">
+                      <strong>{todo.title}</strong>
+                      {todo.notes && <p>{todo.notes}</p>}
+                      <div className="todo-meta">
+                        <span className={`category-pill ${todo.category.toLowerCase()}`}>{todo.category}</span>
+                        <span className={`priority ${todo.priority}`}>{todo.priority}</span>
+                        <time dateTime={todo.dueDate}>{formatDueDate(todo.dueDate)}</time>
+                      </div>
+                    </div>
+                    <div className="todo-actions">
+                      <button
+                        aria-label={`Edit: ${todo.title}`}
+                        className="edit-button"
+                        onClick={() => startEditing(todo)}
+                        type="button"
+                      >
+                        <TaskIcon name="edit" />
+                      </button>
+                      <button
+                        aria-label={`Delete: ${todo.title}`}
+                        className="delete-button"
+                        onClick={() => deleteTodo(todo.id)}
+                        type="button"
+                      >
+                        <TaskIcon name="trash" />
+                      </button>
+                    </div>
+                  </>
+                )}
               </li>
             ))}
           </ul>
