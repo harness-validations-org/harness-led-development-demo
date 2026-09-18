@@ -1,7 +1,9 @@
 {
   "schemaVersion": 1,
   "runId": "edit-existing-tasks",
-  "status": "evaluated",
+  "status": "reported",
   "startCommit": "7bde3e0b5be3628c08017235fe6157f98f5d3ffe",
-  "harnessCommit": "3fb12ebd7a2dd2d798025c6b0d16aec4635d68af"
+  "harnessCommit": "3fb12ebd7a2dd2d798025c6b0d16aec4635d68af",
+  "result": "passed",
+  "endCommit": "1e4c0e23ccfd0b23ebf9a32c617db61b30734436"
 }
