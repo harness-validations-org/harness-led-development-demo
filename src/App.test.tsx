@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
 
@@ -37,6 +37,68 @@ describe('Daymark', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete: Finalize the product roadmap' }))
     expect(screen.queryByText('Finalize the product roadmap')).not.toBeInTheDocument()
+  })
+
+  it('edits every task detail, preserves completion, and persists the changes', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Morning strength session' }))
+    const editor = screen.getByRole('form', { name: 'Edit Morning strength session' })
+    fireEvent.change(within(editor).getByLabelText('Task title'), {
+      target: { value: 'Evening strength session' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Notes'), {
+      target: { value: 'Lower body · 40 minutes' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Category'), {
+      target: { value: 'Personal' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Priority'), {
+      target: { value: 'high' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Due date'), {
+      target: { value: '2020-01-01' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+
+    const updatedRow = screen.getByText('Evening strength session').closest('li')
+    expect(updatedRow).not.toBeNull()
+    expect(within(updatedRow!).getByText('Lower body · 40 minutes')).toBeInTheDocument()
+    expect(within(updatedRow!).getByText('Personal')).toBeInTheDocument()
+    expect(within(updatedRow!).getByText('high')).toBeInTheDocument()
+    expect(
+      within(updatedRow!).getByRole('button', { name: 'Mark active: Evening strength session' }),
+    ).toBeInTheDocument()
+
+    const stored = JSON.parse(localStorage.getItem('daymark.todos.v1') ?? '[]')
+    expect(stored).toContainEqual(expect.objectContaining({
+      id: 'seed-2',
+      title: 'Evening strength session',
+      notes: 'Lower body · 40 minutes',
+      completed: true,
+      category: 'Personal',
+      priority: 'high',
+      dueDate: '2020-01-01',
+    }))
+  })
+
+  it('rejects an empty edited title and cancels without saving', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+    const editor = screen.getByRole('form', { name: 'Edit Finalize the product roadmap' })
+    const titleInput = within(editor).getByLabelText('Task title')
+    fireEvent.change(titleInput, { target: { value: '   ' } })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+
+    expect(within(editor).getByRole('alert')).toHaveTextContent('Task title is required.')
+    expect(localStorage.getItem('daymark.todos.v1')).toContain('Finalize the product roadmap')
+
+    fireEvent.change(titleInput, { target: { value: 'Unsaved title' } })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Cancel' }))
+    expect(screen.getByText('Finalize the product roadmap')).toBeInTheDocument()
+    expect(screen.queryByText('Unsaved title')).not.toBeInTheDocument()
+    expect(localStorage.getItem('daymark.todos.v1')).not.toContain('Unsaved title')
   })
 
   it('filters the list by category and search query', () => {

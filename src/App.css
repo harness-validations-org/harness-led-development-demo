@@ -580,6 +580,12 @@ h1 {
   background: var(--sage);
 }
 
+.todo-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-button,
 .delete-button {
   background: transparent;
   border: 0;
@@ -590,15 +596,22 @@ h1 {
   transition: color 150ms ease, opacity 150ms ease;
 }
 
+.todo-list li:hover .edit-button,
 .todo-list li:hover .delete-button,
+.edit-button:focus-visible,
 .delete-button:focus-visible {
   opacity: 1;
+}
+
+.edit-button:hover {
+  color: var(--ink);
 }
 
 .delete-button:hover {
   color: var(--coral);
 }
 
+.edit-button svg,
 .delete-button svg {
   fill: none;
   height: 17px;
@@ -607,6 +620,88 @@ h1 {
   stroke-linejoin: round;
   stroke-width: 1.6;
   width: 17px;
+}
+
+.todo-list li.editing {
+  display: block;
+  padding: 16px 3px;
+}
+
+.edit-task {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.edit-fields {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.edit-fields label {
+  color: var(--muted);
+  display: grid;
+  font-size: 0.64rem;
+  font-weight: 700;
+  gap: 5px;
+}
+
+.edit-fields .edit-title,
+.edit-fields .edit-notes {
+  grid-column: 1 / -1;
+}
+
+.edit-fields input,
+.edit-fields select,
+.edit-fields textarea {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 8px 9px;
+  width: 100%;
+}
+
+.edit-fields textarea {
+  resize: vertical;
+}
+
+.edit-error {
+  color: #a33b2b;
+  font-size: 0.7rem;
+  margin: 9px 0 0;
+}
+
+.edit-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.edit-form-actions button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 7px 11px;
+}
+
+.cancel-edit {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.save-edit {
+  background: var(--coral);
+  border-color: var(--coral) !important;
+  color: white;
 }
 
 .empty-state {
@@ -645,7 +740,8 @@ select {
 
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
 }
@@ -741,5 +837,14 @@ select:focus-visible {
   .add-options button {
     flex: 1 1 120px;
     width: 100%;
+  }
+
+  .edit-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-fields .edit-title,
+  .edit-fields .edit-notes {
+    grid-column: auto;
   }
 }
