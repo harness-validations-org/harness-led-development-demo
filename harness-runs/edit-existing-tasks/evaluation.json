@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "commands": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 190,
+      "stdout": "> daymark-todo@0.0.0 lint\n> oxlint",
+      "stderr": ""
+    },
+    {
+      "name": "test",
+      "command": "npm test",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 2503,
+      "stdout": "> daymark-todo@0.0.0 test\n> vitest run\n\n\n RUN  v4.1.11 <repo>\n\n\n Test Files  1 passed (1)\n      Tests  7 passed (7)\n   Start at  01:54:49\n   Duration  1.98s (transform 189ms, setup 174ms, import 180ms, tests 1.06s, environment 433ms)",
+      "stderr": ""
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 5020,
+      "stdout": "> daymark-todo@0.0.0 build\n> tsc -b && vite build\n\n\u001b[36mvite v7.3.6 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 31 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.64 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.38 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[35mindex-C-dXxcaZ.css  \u001b[39m\u001b[1m\u001b[2m 11.01 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.02 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[36mindex-DwHTRzei.js   \u001b[39m\u001b[1m\u001b[2m233.71 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 72.83 kB\u001b[22m\n\u001b[32m✓ built in 1.54s\u001b[39m",
+      "stderr": ""
+    }
+  ],
+  "safety": {
+    "status": "passed",
+    "changedFiles": 2,
+    "maxChangedFiles": 12,
+    "forbidden": [],
+    "outsideAllowed": []
+  },
+  "scenarios": [
+    {
+      "id": "edit-task-details",
+      "title": "Save changes to every editable task detail",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Playwright MCP edited title, notes, category, priority, and due date on seed-1; exactly one updated task was shown, its incomplete state and id were preserved, and localStorage contained every saved value."
+      ]
+    },
+    {
+      "id": "reject-blank-edit-title",
+      "title": "Reject an empty edited title",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Playwright MCP submitted a whitespace title; the editor stayed open, an alert announced the error, Title had aria-invalid=true, and localStorage retained the original title."
+      ]
+    },
+    {
+      "id": "cancel-task-edit",
+      "title": "Cancel discards unsaved changes",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Playwright MCP cancelled changed title and notes; original values and normal complete/edit/delete controls returned, and draft text was absent from localStorage."
+      ]
+    },
+    {
+      "id": "persist-and-refilter-edit",
+      "title": "Saved edits persist and update filtering",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Playwright MCP changed seed-1 to Health with a future date; it left Today, survived reload in Upcoming, appeared under Health with active count 2, and matched its edited title in search."
+      ]
+    },
+    {
+      "id": "editing-accessibility-and-regression",
+      "title": "Editing is accessible without breaking existing actions",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Playwright MCP opened edit by keyboard, verified the task-specific form and five labeled fields, autofocus and logical Tab order, cancelled by keyboard, then added, completed, searched, and deleted a task."
+      ]
+    }
+  ],
+  "console": {
+    "status": "passed",
+    "errors": []
+  }
+}
