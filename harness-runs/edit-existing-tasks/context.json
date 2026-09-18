@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "summary": "Daymark currently supports adding, completing, deleting, filtering, and persisting tasks, but existing tasks cannot be corrected or updated. Issue #2 requests editing for existing tasks.",
+  "requirements": [
+    "A user can start editing an existing task from the task list.",
+    "A user can update the task title, notes, category, priority, and due date.",
+    "Saving updates the rendered task and browser storage.",
+    "A blank title cannot be saved.",
+    "Cancelling leaves the task unchanged.",
+    "The editing controls have accessible names and keyboard-operable actions."
+  ],
+  "constraints": [
+    "Use the vendored harness workflow and preserve its run evidence.",
+    "Keep changes within the configured allowed paths and twelve-file budget.",
+    "Preserve existing add, complete, delete, filter, and persistence behavior.",
+    "Create a pull request only after the harness evaluation succeeds."
+  ],
+  "assumptions": [
+    "Editing should cover every user-controlled field represented by the Todo type.",
+    "One task is edited at a time using an inline form.",
+    "Completed state is changed only through the existing completion control."
+  ],
+  "openQuestions": [],
+  "sources": [
+    {
+      "type": "github-issue",
+      "url": "https://github.com/harness-validations-org/harness-led-development-demo/issues/2",
+      "summary": "Open issue titled 'Add a feature to edit existing tasks.' requests correcting or updating an existing task."
+    }
+  ]
+}

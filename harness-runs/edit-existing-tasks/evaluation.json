@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "commands": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 184,
+      "stdout": "> daymark-todo@0.0.0 lint\n> oxlint",
+      "stderr": ""
+    },
+    {
+      "name": "test",
+      "command": "npm test",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 1486,
+      "stdout": "> daymark-todo@0.0.0 test\n> vitest run\n\n\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.11 \u001b[39m\u001b[90m<repo>\u001b[39m\n\n \u001b[32m✓\u001b[39m src/App.test.tsx \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 555\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m6 passed\u001b[39m\u001b[22m\u001b[90m (6)\u001b[39m\n\u001b[2m   Start at \u001b[22m 02:41:16\n\u001b[2m   Duration \u001b[22m 1.12s\u001b[2m (transform 83ms, setup 106ms, import 69ms, tests 555ms, environment 278ms)\u001b[22m",
+      "stderr": ""
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 2684,
+      "stdout": "> daymark-todo@0.0.0 build\n> tsc -b && vite build\n\n\u001b[36mvite v7.3.6 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 31 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.64 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.39 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[35mindex-DSEFLygr.css  \u001b[39m\u001b[1m\u001b[2m 11.06 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.10 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[36mindex-bVY_XOjJ.js   \u001b[39m\u001b[1m\u001b[2m233.67 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 72.81 kB\u001b[22m\n\u001b[32m✓ built in 854ms\u001b[39m",
+      "stderr": ""
+    }
+  ],
+  "safety": {
+    "status": "passed",
+    "changedFiles": 10,
+    "maxChangedFiles": 12,
+    "forbidden": [],
+    "outsideAllowed": []
+  },
+  "scenarios": [
+    {
+      "id": "edit-task-primary-flow",
+      "title": "Edit and save every editable task field",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "The inline editor accepted changes to title, notes, category, priority, and due date.",
+        "Saving closed the editor and rendered every updated value in the task list."
+      ]
+    },
+    {
+      "id": "edit-task-title-validation",
+      "title": "A task cannot be saved without a title",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Whitespace-only title kept the inline editor open.",
+        "The editor showed \"Title is required.\" and browser storage retained the original title."
+      ]
+    },
+    {
+      "id": "edit-task-cancel",
+      "title": "Cancel discards task edits",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Cancelling closed the editor.",
+        "The task retained its original title."
+      ]
+    },
+    {
+      "id": "edit-task-persists",
+      "title": "Saved task edits persist after reload",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "Reloading retained the edited task title and notes in the UI.",
+        "Browser storage retained the edited category, priority, and due date."
+      ]
+    },
+    {
+      "id": "existing-task-actions-regression",
+      "title": "Existing completion and deletion actions still work",
+      "priority": "required",
+      "status": "passed",
+      "evidence": [
+        "An active task could still be completed.",
+        "A different task could still be deleted."
+      ]
+    }
+  ],
+  "console": {
+    "status": "passed",
+    "errors": []
+  }
+}

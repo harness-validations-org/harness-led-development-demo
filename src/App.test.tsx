@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
 
@@ -37,6 +37,62 @@ describe('Daymark', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete: Finalize the product roadmap' }))
     expect(screen.queryByText('Finalize the product roadmap')).not.toBeInTheDocument()
+  })
+
+  it('edits every task field and persists the changes', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: /All tasks/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+
+    const editor = screen.getByRole('form', {
+      name: 'Edit task: Finalize the product roadmap',
+    })
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Title' }), {
+      target: { value: 'Publish the product roadmap' },
+    })
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Notes' }), {
+      target: { value: 'Share the approved version' },
+    })
+    fireEvent.change(within(editor).getByRole('combobox', { name: 'Category' }), {
+      target: { value: 'Personal' },
+    })
+    fireEvent.change(within(editor).getByRole('combobox', { name: 'Priority' }), {
+      target: { value: 'low' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Due date'), {
+      target: { value: '2030-12-31' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+
+    expect(screen.getByText('Publish the product roadmap')).toBeInTheDocument()
+    expect(screen.getByText('Share the approved version')).toBeInTheDocument()
+    expect(localStorage.getItem('daymark.todos.v1')).toContain('Publish the product roadmap')
+    expect(localStorage.getItem('daymark.todos.v1')).toContain('2030-12-31')
+  })
+
+  it('validates task edits and supports cancelling', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+    let editor = screen.getByRole('form', {
+      name: 'Edit task: Finalize the product roadmap',
+    })
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Title' }), {
+      target: { value: '   ' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+
+    expect(within(editor).getByRole('alert')).toHaveTextContent('Title is required.')
+
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Title' }), {
+      target: { value: 'Discard this change' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Cancel' }))
+
+    expect(screen.getByText('Finalize the product roadmap')).toBeInTheDocument()
+    expect(screen.queryByText('Discard this change')).not.toBeInTheDocument()
+    expect(screen.queryByRole('form', { name: /Edit task/ })).not.toBeInTheDocument()
   })
 
   it('filters the list by category and search query', () => {
