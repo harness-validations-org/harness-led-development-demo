@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "status": "failed",
+  "commands": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 185,
+      "stdout": "> daymark-todo@0.0.0 lint\n> oxlint",
+      "stderr": ""
+    },
+    {
+      "name": "test",
+      "command": "npm test",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 2404,
+      "stdout": "> daymark-todo@0.0.0 test\n> vitest run\n\n\n RUN  v4.1.11 <repo>\n\n\n Test Files  1 passed (1)\n      Tests  7 passed (7)\n   Start at  02:19:43\n   Duration  1.87s (transform 179ms, setup 192ms, import 172ms, tests 931ms, environment 436ms)",
+      "stderr": ""
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 4951,
+      "stdout": "> daymark-todo@0.0.0 build\n> tsc -b && vite build\n\n\u001b[36mvite v7.3.6 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m✓\u001b[39m 31 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  0.64 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  0.38 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[35mindex-BSrSTcC7.css  \u001b[39m\u001b[1m\u001b[2m 10.94 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip:  3.03 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[2massets/\u001b[22m\u001b[36mindex-CaNYv7fq.js   \u001b[39m\u001b[1m\u001b[2m233.71 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m │ gzip: 72.86 kB\u001b[22m\n\u001b[32m✓ built in 1.52s\u001b[39m",
+      "stderr": ""
+    }
+  ],
+  "safety": {
+    "status": "failed",
+    "changedFiles": 3,
+    "maxChangedFiles": 12,
+    "forbidden": [],
+    "outsideAllowed": [
+      "arness-runs/edit-existing-tasks/run.json"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "edit-task-save-details",
+      "title": "Edit and save every task detail",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-cancel",
+      "title": "Cancel discards task edits",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-title-validation",
+      "title": "Blank titles cannot be saved",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-persists",
+      "title": "Saved edits persist after reload",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "edit-task-accessible-regression",
+      "title": "Editing is accessible and existing actions still work",
+      "priority": "required",
+      "status": "not-run",
+      "evidence": []
+    }
+  ],
+  "console": {
+    "status": "not-run",
+    "errors": []
+  }
+}
