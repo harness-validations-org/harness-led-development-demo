@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "edit-task-details",
+      "title": "Save changes to every editable task detail",
+      "given": [
+        "The seeded task Finalize the product roadmap is visible and incomplete"
+      ],
+      "when": [
+        "The user opens its editor",
+        "The user changes the title, notes, category, priority, and due date",
+        "The user saves the edit"
+      ],
+      "then": [
+        "The same task displays all updated values",
+        "The task remains incomplete",
+        "No duplicate task is created"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "reject-blank-edit-title",
+      "title": "Reject an empty edited title",
+      "given": [
+        "An existing task is open for editing"
+      ],
+      "when": [
+        "The title is replaced with whitespace and save is attempted"
+      ],
+      "then": [
+        "The editor remains open",
+        "Accessible validation feedback identifies the title problem",
+        "The original task remains unchanged in the list and storage"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "cancel-task-edit",
+      "title": "Cancel discards unsaved changes",
+      "given": [
+        "An existing task is open for editing"
+      ],
+      "when": [
+        "The user changes multiple fields",
+        "The user cancels editing"
+      ],
+      "then": [
+        "The original task values are displayed",
+        "Normal complete, edit, and delete actions are available",
+        "No draft values are persisted"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "persist-and-refilter-edit",
+      "title": "Saved edits persist and update filtering",
+      "given": [
+        "An existing task is visible in its current date and category view"
+      ],
+      "when": [
+        "The user edits searchable text, category, and due date and saves",
+        "The user reloads and navigates to the matching view or filter"
+      ],
+      "then": [
+        "The task appears only where its updated fields match",
+        "The updated values survive reload",
+        "Task counts reflect the saved category and date"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "editing-accessibility-and-regression",
+      "title": "Editing is accessible without breaking existing actions",
+      "given": [
+        "Seeded tasks are loaded"
+      ],
+      "when": [
+        "The user locates edit controls by accessible task-specific names",
+        "The user uses labeled edit fields and save or cancel actions",
+        "The user adds, completes, searches for, and deletes tasks"
+      ],
+      "then": [
+        "Edit controls and fields have accessible names",
+        "Focus indicators and keyboard interaction remain available",
+        "Existing actions still work",
+        "No browser console errors occur throughout the run"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    }
+  ]
+}

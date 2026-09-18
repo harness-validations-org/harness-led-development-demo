@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "summary": "Add an accessible inline editor that reuses Todo field types, updates the existing item only after validation, and relies on the current todos persistence and filtering flow.",
+  "steps": [
+    "Add task-specific edit controls and a single-task draft state initialized from the selected Todo.",
+    "Render labeled fields for title, notes, category, priority, and due date with explicit save and cancel actions.",
+    "Validate titles before updating the matching Todo while preserving id and completion state.",
+    "Style edit mode responsively and keep normal task actions unchanged outside edit mode.",
+    "Add automated tests for save, validation, cancel, persistence, and existing behaviors.",
+    "Run deterministic and Playwright evaluation and record evidence."
+  ],
+  "files": [
+    "src/App.tsx",
+    "src/App.css",
+    "src/App.test.tsx",
+    "harness-runs/edit-existing-tasks/**"
+  ],
+  "risks": [
+    "Editing a field used by the active filter may make the task leave the current list immediately after save.",
+    "Draft values must not leak into local storage before save.",
+    "Inline form controls must remain usable on narrow screens and with assistive technology."
+  ],
+  "allowedPaths": [
+    "src/**",
+    "harness-runs/**"
+  ]
+}
