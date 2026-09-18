@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "summary": "Add an accessible inline editor for every task, reuse existing task metadata options, update state atomically on save, and cover editing behavior with automated and browser tests.",
+  "steps": [
+    "Add edit-session state and save/cancel handlers that validate and atomically update an existing task.",
+    "Render labelled inline editing controls and an edit action without disrupting existing task actions.",
+    "Style the edit form consistently with the current responsive task list.",
+    "Add automated coverage for saving, validation, cancellation, completion-state preservation, and localStorage persistence.",
+    "Update directly related feature documentation and run all configured evaluation checks."
+  ],
+  "files": [
+    "src/App.tsx",
+    "src/App.css",
+    "src/App.test.tsx",
+    "README.md"
+  ],
+  "risks": [
+    "A saved task may immediately leave the current filtered or searched view when edited metadata no longer matches.",
+    "Editing a completed task must not reset its completion state.",
+    "Hidden row actions must remain keyboard discoverable."
+  ],
+  "allowedPaths": [
+    "src/**",
+    "README.md",
+    "harness-runs/**"
+  ]
+}

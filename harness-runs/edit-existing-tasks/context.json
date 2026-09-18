@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "summary": "GitHub issue #2 requests the ability to correct or update an existing Daymark task. The React app currently supports adding, completing, deleting, filtering, and locally persisting tasks, but task rows have no edit control.",
+  "requirements": [
+    "Users can open an existing task for editing.",
+    "Users can update the task title, notes, category, priority, and due date.",
+    "Saving updates the displayed task and browser storage while preserving its completion state.",
+    "Users can cancel without changing the task.",
+    "An empty or whitespace-only title cannot be saved.",
+    "Editing controls are keyboard-accessible and clearly labelled."
+  ],
+  "constraints": [
+    "Preserve existing add, complete, delete, search, filter, and persistence behavior.",
+    "Use the existing React state and localStorage persistence model.",
+    "Keep changes within paths allowed by .harness/config.json."
+  ],
+  "assumptions": [
+    "Editing all task metadata is the expected meaning of correcting or updating an existing task.",
+    "An inline edit form is appropriate for the existing task-list interface.",
+    "Only one task needs to be edited at a time."
+  ],
+  "openQuestions": [],
+  "sources": [
+    {
+      "type": "github-issue",
+      "url": "https://github.com/harness-validations-org/harness-led-development-demo/issues/2",
+      "summary": "Open issue requesting a feature to edit an existing task when it needs correction or updating."
+    }
+  ]
+}

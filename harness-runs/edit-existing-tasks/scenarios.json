@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "edit-task-save-and-persist",
+      "title": "Edit every task detail and persist the result",
+      "given": [
+        "An existing active task is visible"
+      ],
+      "when": [
+        "The user opens its labelled edit action",
+        "The user changes its title, notes, category, priority, and due date",
+        "The user saves and reloads the page"
+      ],
+      "then": [
+        "The updated details are displayed after save and reload",
+        "The task identity and completion state are preserved"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "edit-task-validation",
+      "title": "Reject an empty edited title",
+      "given": [
+        "An existing task is in edit mode"
+      ],
+      "when": [
+        "The user replaces its title with whitespace and attempts to save"
+      ],
+      "then": [
+        "A clear validation message is shown",
+        "The original task remains unchanged and the editor stays open"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "edit-task-cancel",
+      "title": "Cancel editing without changing the task",
+      "given": [
+        "An existing task is in edit mode"
+      ],
+      "when": [
+        "The user changes its title and chooses Cancel"
+      ],
+      "then": [
+        "The original title remains visible",
+        "The unsaved title is not stored"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    },
+    {
+      "id": "existing-task-actions-regression",
+      "title": "Existing task actions continue to work",
+      "given": [
+        "The task list is visible after using the editor"
+      ],
+      "when": [
+        "The user adds a task, toggles completion, searches, and deletes a task"
+      ],
+      "then": [
+        "Each existing action still updates the list as expected",
+        "No browser console errors occur during any required scenario"
+      ],
+      "method": "playwright",
+      "priority": "required"
+    }
+  ]
+}
