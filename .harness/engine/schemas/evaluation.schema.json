@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness evaluation",
+  "type": "object",
+  "required": ["schemaVersion", "status", "commands", "safety", "scenarios", "console"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "status": { "enum": ["pending-browser", "passed", "failed"] },
+    "commands": { "type": "array" },
+    "safety": { "type": "object" },
+    "scenarios": { "type": "array" },
+    "console": { "type": "object" }
+  }
+}

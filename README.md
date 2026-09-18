@@ -32,9 +32,9 @@ GitHub Actions runs separate test and production build jobs for pull requests an
 
 ## Harness-led development
 
-This repository pins the private
+This repository vendors a snapshot of the private
 [`harness-validations-org/harness-demo`](https://github.com/harness-validations-org/harness-demo)
-coding harness as a Git submodule.
+coding harness under `.harness/engine`.
 
 Initialize a fresh checkout and verify the integration:
 
@@ -64,7 +64,7 @@ The project skill generates acceptance scenarios before implementation, runs the
 uses Playwright for browser evaluation, and preserves public-safe evidence under `harness-runs/`.
 See [`plans/harness-demo.md`](plans/harness-demo.md) for the architecture and sample feature backlog.
 
-The Markdown skill is the harness entry point. The JavaScript files in the submodule are deterministic
+The Markdown skill is the harness entry point. The JavaScript files in the vendored engine are deterministic
 helpers for installation, validation, checks, and artifact recording; they do not define the agentic
 workflow.
 
@@ -83,9 +83,13 @@ Copilot CLI discovers the generated skill, scenario-planning agent, and Playwrig
 from the todo repository root. The small `.github/skills/harness/SKILL.md` router is committed so
 GitHub cloud agent can discover it before setup begins. The optional scenario-planning agent,
 Playwright CLI MCP configuration, and install provenance are ignored and recreated with
-`npm run harness:install`. After updating the submodule, rerun the installer, commit any router
-update, and start a new Copilot CLI session.
+`npm run harness:install`. After updating the vendored snapshot, rerun the installer, commit any
+router update, and start a new Copilot CLI session.
 
-Copilot cloud agent needs a read-only fine-grained token that can access the private
-`harness-validations-org/harness-demo` repository. Store it as `HARNESS_REPO_TOKEN` in this
-repository's `copilot` environment so `copilot-setup-steps.yml` can initialize the submodule.
+The upstream harness commit is recorded in `.harness/engine/UPSTREAM_COMMIT`. Import a reviewed update
+from a clean checkout with:
+
+```bash
+git subtree pull --prefix=.harness/engine \
+  https://github.com/harness-validations-org/harness-demo.git main --squash
+```

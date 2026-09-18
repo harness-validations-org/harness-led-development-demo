@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness context",
+  "type": "object",
+  "required": ["schemaVersion", "summary", "requirements", "constraints", "assumptions", "openQuestions", "sources"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "summary": { "type": "string" },
+    "requirements": { "type": "array", "items": { "type": "string" } },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "openQuestions": { "type": "array", "items": { "type": "string" } },
+    "sources": { "type": "array", "items": { "type": "object" } }
+  }
+}

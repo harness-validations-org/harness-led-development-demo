@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness plan",
+  "type": "object",
+  "required": ["schemaVersion", "summary", "steps", "files", "risks", "allowedPaths"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "summary": { "type": "string" },
+    "steps": { "type": "array", "items": { "type": "string" } },
+    "files": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "allowedPaths": { "type": "array", "items": { "type": "string" } }
+  }
+}

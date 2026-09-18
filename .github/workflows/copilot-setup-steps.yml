@@ -13,11 +13,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Check out repository and harness
+      - name: Check out repository
         uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          token: ${{ secrets.HARNESS_REPO_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

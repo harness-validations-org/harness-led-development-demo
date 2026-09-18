@@ -15,15 +15,15 @@ evaluation contract.
 - The reusable harness will live in a separate private repository:
   `harness-validations-org/harness-demo`.
 - Its preferred sibling checkout is `../harness-demo`.
-- The todo repository will consume the harness as a Git submodule at `.harness/engine`.
+- The todo repository will vendor a reviewed harness snapshot at `.harness/engine`.
 - The project skill will be named `harness`.
 - The harness installer will project host-discoverable adapters into the todo repository:
   `.github/skills/harness/SKILL.md`, `.github/agents/*.agent.md`, and `.mcp.json`.
 - The generated router will resolve the pinned harness engine from `.harness/engine`.
 - Setup will be explicit, idempotent, and drift-checkable through `npm run harness:install` and
   `npm run harness:check`. It will not depend on a Git hook that silently executes after clone.
-- `npm run harness:setup` will provide the one-command local bootstrap by initializing the submodule,
-  installing app dependencies, projecting adapters, checking drift, and running the doctor.
+- `npm run harness:setup` will provide the one-command local bootstrap by installing app dependencies,
+  projecting adapters, checking drift, and running the doctor.
 - The thin `.github/skills/harness/SKILL.md` router will be committed for cloud-agent discovery.
   Generated agents, CLI MCP configuration, and install provenance will be ignored. Generated run state
   and evidence will be committed for future comparison and analysis.
@@ -91,7 +91,7 @@ version.
     copilot-setup-steps.yml
 .mcp.json                   # generated and ignored CLI MCP configuration
 .harness/
-  engine/                  # private Git submodule
+  engine/                  # committed snapshot of harness-demo
   config.json              # Daymark project contract
   installed.json           # generated and ignored provenance
 harness-runs/
@@ -105,7 +105,6 @@ harness-runs/
     report.md
 plans/
   harness-demo.md
-.gitmodules
 ```
 
 `harness-runs/` is intentionally committed. Generated files should use stable formatting and avoid
@@ -146,19 +145,18 @@ The project skill is a generated router. It must:
 6. Stop with an explicit report and changed-file summary.
 7. Avoid commit, push, or pull-request actions unless separately requested.
 
-If the submodule is missing or projected adapters are stale, the skill should stop with:
+If the vendored engine is missing or projected adapters are stale, the skill should stop with:
 
 ```bash
-git submodule update --init --recursive
 npm run harness:install
 ```
 
-Copilot does not recursively discover a submodule's skills, custom agents, or MCP configuration.
+Copilot does not recursively discover nested skills, custom agents, or MCP configuration.
 The installer copies only these required host adapters into the target working tree and records their
 source hashes. The tiny skill router is committed because cloud skill discovery occurs from repository
 content and should not depend on files generated during setup. The optional custom agent, CLI MCP
 configuration, and provenance manifest are ignored. Harness implementation stays pinned in the
-submodule, and the setup workflow regenerates local adapters before cloud-agent execution.
+vendored engine, and the setup workflow regenerates local adapters before cloud-agent execution.
 
 The harness entry point is the generated Markdown skill, not a JavaScript executable. The authoritative
 agentic workflow lives in `.harness/engine/skills/build-feature/SKILL.md`. JavaScript is limited to
@@ -284,7 +282,7 @@ Include:
 - Exit statuses and summarized evidence.
 - Final changed-file list.
 - Scenario-level results.
-- Harness submodule commit.
+- Harness upstream commit from `.harness/engine/UPSTREAM_COMMIT`.
 - Todo repository starting and ending commits when available.
 
 Exclude:
@@ -346,7 +344,7 @@ the harness integration.
 
 The first end-to-end validation will run from the todo repository:
 
-1. Initialize the private submodule using the developer's GitHub credentials.
+1. Clone the todo repository.
 2. Run `npm run harness:setup`.
 3. Start Copilot CLI from the repository root.
 4. Invoke the `/harness` project skill with a feature request.
@@ -364,15 +362,8 @@ GitHub integration in Microsoft Teams.
 The todo repository will include `.github/workflows/copilot-setup-steps.yml` to:
 
 - Use a supported Node.js version.
-- Initialize the private `.harness/engine` submodule.
 - Run `npm run harness:setup`, which installs dependencies, projects adapters, checks drift, and runs
   the doctor.
-
-Because both repositories are private, the setup job needs a read-only fine-grained token or GitHub
-App token that can read `harness-validations-org/harness-demo`. Store it as a
-`HARNESS_REPO_TOKEN` secret in the todo repository's `copilot` environment and pass it to
-`actions/checkout` as the submodule checkout token. Local CLI users can rely on their existing GitHub
-credentials.
 
 The Teams test should use only a public or synthetic feature discussion. The prompt should identify the
 repository when it is not already configured as the conversation's default:
@@ -386,7 +377,7 @@ repo=harness-validations-org/harness-led-development-demo
 The cloud run should demonstrate that it:
 
 - Discovers `.github/skills/harness/SKILL.md`.
-- Resolves the pinned private harness submodule.
+- Reads the committed harness snapshot.
 - Generates and preserves scenarios before implementation.
 - Builds and tests the application.
 - Uses Playwright MCP for browser validation.
@@ -413,6 +404,20 @@ The repository MCP settings can therefore remain:
 An optional documentation MCP server may be added later to demonstrate custom MCP context. It
 must be unauthenticated or use a repository Agents secret prefixed with `COPILOT_MCP_`, expose only the
 required read-only tools, and never be required for the core workflow.
+
+### Cloud Playwright reliability finding
+
+Two otherwise equivalent GitHub.com runs produced different browser outcomes:
+
+- The first run could not navigate through the built-in Playwright MCP and correctly marked every
+  required browser scenario blocked.
+- The retry initially saw the same navigation and browser-install failures, then installed Chromium
+  and recovered through the locally projected Playwright path. All five required scenarios and console
+  checks passed.
+
+Treat the cloud Playwright MCP as currently flaky rather than unavailable. Keep the generated local
+Playwright MCP fallback and the harness's fail-closed scenario policy. Do not add a duplicate
+repository-level cloud MCP unless repeated runs continue to fail.
 
 ## First Feature
 
@@ -558,7 +563,7 @@ complexity.
 
 1. Create the private `harness-validations-org/harness-demo` repository and sibling checkout.
 2. Implement the zero- or minimal-dependency harness core and its unit tests.
-3. Add the submodule and project skill to the todo repository.
+3. Vendor the harness snapshot and add the project skill to the todo repository.
 4. Add the Daymark harness configuration and cloud-agent setup workflow.
 5. Validate the task-editing feature locally through Copilot CLI.
 6. Review and commit the generated run artifacts.

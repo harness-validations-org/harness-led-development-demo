@@ -1,0 +1,19 @@
+{
+  "name": "@harness-validations-org/harness-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A small coding harness for context, planning, generation, and evaluation.",
+  "bin": {
+    "harness-demo": "bin/harness.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "harness": "node bin/harness.mjs",
+    "install:project": "node bin/install.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
