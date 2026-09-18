@@ -17,15 +17,16 @@ evaluation contract.
 - Its preferred sibling checkout is `../harness-demo`.
 - The todo repository will consume the harness as a Git submodule at `.harness/engine`.
 - The project skill will be named `harness`.
-- The harness installer will project ignored, host-discoverable adapters into the todo repository:
+- The harness installer will project host-discoverable adapters into the todo repository:
   `.github/skills/harness/SKILL.md`, `.github/agents/*.agent.md`, and `.mcp.json`.
 - The generated router will resolve the pinned harness engine from `.harness/engine`.
 - Setup will be explicit, idempotent, and drift-checkable through `npm run harness:install` and
   `npm run harness:check`. It will not depend on a Git hook that silently executes after clone.
 - `npm run harness:setup` will provide the one-command local bootstrap by initializing the submodule,
   installing app dependencies, projecting adapters, checking drift, and running the doctor.
-- Generated host adapters will not be committed. Generated run state and evidence will be committed
-  for future comparison and analysis.
+- The thin `.github/skills/harness/SKILL.md` router will be committed for cloud-agent discovery.
+  Generated agents, CLI MCP configuration, and install provenance will be ignored. Generated run state
+  and evidence will be committed for future comparison and analysis.
 - Run artifacts must be public-safe: no credentials, tokens, private URLs, raw authentication
   headers, machine-specific absolute paths, or private conversation content.
 - The initial harness will not manage commits, pushes, pull requests, merges, reviewers, or releases.
@@ -83,7 +84,7 @@ version.
 .github/
   skills/
     harness/
-      SKILL.md              # generated and ignored
+      SKILL.md              # generated and committed cloud entry point
   agents/
     harness-scenario-planner.agent.md  # generated and ignored
   workflows/
@@ -154,8 +155,10 @@ npm run harness:install
 
 Copilot does not recursively discover a submodule's skills, custom agents, or MCP configuration.
 The installer copies only these required host adapters into the target working tree and records their
-source hashes. They are ignored rather than committed. Harness implementation stays pinned in the
-submodule, and the committed setup workflow regenerates the adapters before cloud-agent execution.
+source hashes. The tiny skill router is committed because cloud skill discovery occurs from repository
+content and should not depend on files generated during setup. The optional custom agent, CLI MCP
+configuration, and provenance manifest are ignored. Harness implementation stays pinned in the
+submodule, and the setup workflow regenerates local adapters before cloud-agent execution.
 
 The harness entry point is the generated Markdown skill, not a JavaScript executable. The authoritative
 agentic workflow lives in `.harness/engine/skills/build-feature/SKILL.md`. JavaScript is limited to

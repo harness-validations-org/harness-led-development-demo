@@ -80,9 +80,11 @@ Playwright evaluation, artifact recording, repair limits, or Git restrictions. T
 part of the harness orchestration contract.
 
 Copilot CLI discovers the generated skill, scenario-planning agent, and Playwright MCP configuration
-from the todo repository root. These generated adapters are ignored by Git and recreated with
-`npm run harness:install`. After updating the submodule, rerun the installer and start a new Copilot
-CLI session (`/skills reload` is sufficient for the skill alone).
+from the todo repository root. The small `.github/skills/harness/SKILL.md` router is committed so
+GitHub cloud agent can discover it before setup begins. The optional scenario-planning agent,
+Playwright CLI MCP configuration, and install provenance are ignored and recreated with
+`npm run harness:install`. After updating the submodule, rerun the installer, commit any router
+update, and start a new Copilot CLI session.
 
 Copilot cloud agent needs a read-only fine-grained token that can access the private
 `harness-validations-org/harness-demo` repository. Store it as `HARNESS_REPO_TOKEN` in this
