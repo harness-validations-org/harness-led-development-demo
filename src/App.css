@@ -580,6 +580,12 @@ h1 {
   background: var(--sage);
 }
 
+.todo-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.edit-button,
 .delete-button {
   background: transparent;
   border: 0;
@@ -590,15 +596,22 @@ h1 {
   transition: color 150ms ease, opacity 150ms ease;
 }
 
+.todo-list li:hover .edit-button,
 .todo-list li:hover .delete-button,
+.edit-button:focus-visible,
 .delete-button:focus-visible {
   opacity: 1;
+}
+
+.edit-button:hover {
+  color: var(--sage);
 }
 
 .delete-button:hover {
   color: var(--coral);
 }
 
+.edit-button svg,
 .delete-button svg {
   fill: none;
   height: 17px;
@@ -607,6 +620,80 @@ h1 {
   stroke-linejoin: round;
   stroke-width: 1.6;
   width: 17px;
+}
+
+.todo-list li.editing {
+  display: block;
+  padding: 18px 3px;
+}
+
+.edit-task {
+  display: grid;
+  gap: 12px;
+}
+
+.edit-task label {
+  color: var(--muted);
+  display: grid;
+  font-size: 0.65rem;
+  font-weight: 700;
+  gap: 5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.edit-task input,
+.edit-task textarea,
+.edit-task select {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 8px 9px;
+}
+
+.edit-task textarea {
+  resize: vertical;
+}
+
+.edit-options {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.edit-error {
+  color: #a9432c;
+  font-size: 0.7rem;
+  margin: -3px 0 0;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.edit-actions button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 8px 13px;
+}
+
+.save-button {
+  background: var(--coral);
+  border-color: var(--coral) !important;
+  color: white;
+}
+
+.cancel-button {
+  background: var(--surface);
+  color: var(--muted);
 }
 
 .empty-state {
@@ -639,12 +726,14 @@ h1 {
 
 button,
 input,
+textarea,
 select {
   box-sizing: border-box;
 }
 
 button:focus-visible,
 input:focus-visible,
+textarea:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
@@ -741,5 +830,9 @@ select:focus-visible {
   .add-options button {
     flex: 1 1 120px;
     width: 100%;
+  }
+
+  .edit-options {
+    grid-template-columns: 1fr;
   }
 }
