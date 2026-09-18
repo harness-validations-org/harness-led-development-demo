@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
 
@@ -36,6 +36,76 @@ describe('Daymark', () => {
     ).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete: Finalize the product roadmap' }))
+    expect(screen.queryByText('Finalize the product roadmap')).not.toBeInTheDocument()
+  })
+
+  it('edits every task detail and persists the changes', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+    const editor = screen.getByRole('form', { name: 'Edit task: Finalize the product roadmap' })
+
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Title' }), {
+      target: { value: 'Publish the product roadmap' },
+    })
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Notes' }), {
+      target: { value: 'Send the approved version to the team.' },
+    })
+    fireEvent.change(within(editor).getByRole('combobox', { name: 'Category' }), {
+      target: { value: 'Personal' },
+    })
+    fireEvent.change(within(editor).getByRole('combobox', { name: 'Priority' }), {
+      target: { value: 'low' },
+    })
+    fireEvent.change(within(editor).getByLabelText('Due date'), {
+      target: { value: '2099-01-15' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+    fireEvent.click(screen.getByRole('button', { name: /All tasks/ }))
+
+    expect(screen.getByText('Publish the product roadmap')).toBeInTheDocument()
+    expect(screen.getByText('Send the approved version to the team.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Complete: Publish the product roadmap' })).toBeInTheDocument()
+    expect(screen.getAllByText('Publish the product roadmap')).toHaveLength(1)
+    expect(localStorage.getItem('daymark.todos.v1')).toContain('2099-01-15')
+  })
+
+  it('rejects a blank edit and cancel restores the original task', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+    const editor = screen.getByRole('form', { name: 'Edit task: Finalize the product roadmap' })
+    const titleInput = within(editor).getByRole('textbox', { name: 'Title' })
+
+    fireEvent.change(titleInput, { target: { value: '   ' } })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Enter a title before saving.')
+    expect(titleInput).toHaveAttribute('aria-invalid', 'true')
+    expect(localStorage.getItem('daymark.todos.v1')).toContain('Finalize the product roadmap')
+
+    fireEvent.change(titleInput, { target: { value: 'Unsaved replacement' } })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Cancel' }))
+
+    expect(screen.getByText('Finalize the product roadmap')).toBeInTheDocument()
+    expect(screen.queryByText('Unsaved replacement')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' })).toBeInTheDocument()
+  })
+
+  it('loads saved edits on a later render', () => {
+    const { unmount } = render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Edit: Finalize the product roadmap' }))
+    const editor = screen.getByRole('form', { name: 'Edit task: Finalize the product roadmap' })
+    fireEvent.change(within(editor).getByRole('textbox', { name: 'Title' }), {
+      target: { value: 'Review the saved roadmap' },
+    })
+    fireEvent.click(within(editor).getByRole('button', { name: 'Save changes' }))
+    unmount()
+
+    render(<App />)
+
+    expect(screen.getByText('Review the saved roadmap')).toBeInTheDocument()
     expect(screen.queryByText('Finalize the product roadmap')).not.toBeInTheDocument()
   })
 

@@ -539,6 +539,11 @@ h1 {
   text-decoration: line-through;
 }
 
+.todo-actions {
+  display: flex;
+  gap: 4px;
+}
+
 .todo-meta {
   align-items: center;
   color: var(--muted);
@@ -580,6 +585,7 @@ h1 {
   background: var(--sage);
 }
 
+.edit-button,
 .delete-button {
   background: transparent;
   border: 0;
@@ -591,15 +597,19 @@ h1 {
 }
 
 .todo-list li:hover .delete-button,
-.delete-button:focus-visible {
+.todo-list li:hover .edit-button,
+.delete-button:focus-visible,
+.edit-button:focus-visible {
   opacity: 1;
 }
 
-.delete-button:hover {
+.delete-button:hover,
+.edit-button:hover {
   color: var(--coral);
 }
 
-.delete-button svg {
+.delete-button svg,
+.edit-button svg {
   fill: none;
   height: 17px;
   stroke: currentColor;
@@ -607,6 +617,87 @@ h1 {
   stroke-linejoin: round;
   stroke-width: 1.6;
   width: 17px;
+}
+
+.todo-list li.editing {
+  display: block;
+}
+
+.edit-task {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 14px;
+}
+
+.edit-task label {
+  display: grid;
+  gap: 5px;
+}
+
+.edit-task label > span {
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.edit-task input,
+.edit-task select,
+.edit-task textarea {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 8px 9px;
+  width: 100%;
+}
+
+.edit-task textarea {
+  margin-top: 10px;
+  resize: vertical;
+}
+
+.edit-options {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 10px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.edit-actions button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 8px 13px;
+}
+
+.cancel-edit {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.save-edit {
+  background: var(--coral);
+  border-color: var(--coral) !important;
+  color: white;
+}
+
+.edit-error {
+  color: #a13f2b;
+  font-size: 0.68rem;
+  margin: 5px 0 0;
 }
 
 .empty-state {
@@ -639,13 +730,15 @@ h1 {
 
 button,
 input,
-select {
+select,
+textarea {
   box-sizing: border-box;
 }
 
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
 }
@@ -741,5 +834,9 @@ select:focus-visible {
   .add-options button {
     flex: 1 1 120px;
     width: 100%;
+  }
+
+  .edit-options {
+    grid-template-columns: 1fr;
   }
 }
